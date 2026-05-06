@@ -329,12 +329,12 @@ export default function FeedbackForm() {
                     {/* Header */}
                     <div className="text-center mb-6 pb-4 border-b border-gray-600/50">
                         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
-                            Feedback Form
+                            Form Feedback Training
                         </h1>
                         <div className="text-left mt-6 text-gray-300 space-y-1 text-sm md:text-base border border-gray-600/50 bg-[#2B303E]/50 p-4 rounded-xl">
-                            <p><span className="font-semibold text-white inline-block w-32">Judul Training</span> : Personal Data Protection Law (PDPL) Training</p>
-                            <p><span className="font-semibold text-white inline-block w-32">Tanggal</span> : Surabaya, 16 April 2026</p>
-                            <p><span className="font-semibold text-white inline-block w-32">Klien</span> : Saka Indonesia Pangkah Limited</p>
+                            <p><span className="font-semibold text-white inline-block w-32">Judul Training</span> : DPO Training</p>
+                            <p><span className="font-semibold text-white inline-block w-32">Tanggal</span> : Jakarta, 5-6 Mei 2026</p>
+                            <p><span className="font-semibold text-white inline-block w-32">Klien</span> : PT Bussan Auto Finance</p>
                         </div>
                     </div>
 
@@ -363,7 +363,7 @@ export default function FeedbackForm() {
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-ignite-green to-ignite-green/50 rounded-full"></div>
-                                <h2 className="text-xl font-bold text-white">Personal Information</h2>
+                                <h2 className="text-xl font-bold text-white">Data Peserta</h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -424,7 +424,7 @@ export default function FeedbackForm() {
                         <div className="space-y-6 pt-8 border-t border-gray-200/50">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-ignite-green to-ignite-green/50 rounded-full"></div>
-                                <h2 className="text-xl font-bold text-white">Training Feedback</h2>
+                                <h2 className="text-xl font-bold text-white">Penilaian Training</h2>
                             </div>
 
                             <SelectGroup
@@ -539,7 +539,7 @@ export default function FeedbackForm() {
                             />
 
                             <SelectGroup
-                                label="2. Apakah Anda bersedia menerima informasi/undangan mengenai training atau awareness program yang diselenggarakan oleh Ignite?"
+                                label="2. Apakah Anda bersedia menerima informasi/undangan mengenai training atau awareness program yang diselenggarakan oleh PT Xynexis International?"
                                 name="yt_bersedia_info"
                                 options={['Ya', 'Tidak']}
                                 required
@@ -551,7 +551,7 @@ export default function FeedbackForm() {
                             />
 
                             <SelectGroup
-                                label="3. Apakah Anda bersedia jika beberapa foto atau rekaman video training (yang tidak menampilkan data pribadi dan rahasia) digunakan untuk iklan, publisitas dan promosi oleh Ignite dan Xynexis Group?"
+                                label="3. Apakah Anda bersedia jika beberapa foto atau rekaman video training (yang tidak menampilkan data pribadi dan rahasia) digunakan untuk iklan, publisitas dan promosi oleh Xynexis Group?"
                                 name="yt_bersedia_dokumentasi"
                                 options={['Ya', 'Tidak']}
                                 required
@@ -650,7 +650,7 @@ export default function FeedbackForm() {
                                 </span>
                             ) : (
                                 <span className="flex items-center justify-center gap-2">
-                                    Submit Feedback
+                                    Kirim Feedback
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
