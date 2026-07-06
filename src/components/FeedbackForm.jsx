@@ -333,8 +333,8 @@ export default function FeedbackForm() {
                         </h1>
                         <div className="text-left mt-6 text-gray-300 space-y-1 text-sm md:text-base border border-gray-600/50 bg-[#2B303E]/50 p-4 rounded-xl">
                             <p><span className="font-semibold text-white inline-block w-32">Judul Training</span> : High Level Training - Perlindungan Data Pribadi (PDP) Implementation</p>
-                            <p><span className="font-semibold text-white inline-block w-32">Tanggal</span> : Kamis, 25 Juni 2026</p>
-                            <p><span className="font-semibold text-white inline-block w-32">Klien</span> : PT Siloam International Hospitals</p>
+                            <p><span className="font-semibold text-white inline-block w-32">Tanggal</span> : Kamis, 9 Juli 2026</p>
+                            <p><span className="font-semibold text-white inline-block w-32">Klien</span> : PERUSAHAAN UMUM PERCETAKAN UANG REPUBLIK INDONESIA (PERURI)</p>
                         </div>
                     </div>
 
@@ -628,6 +628,13 @@ export default function FeedbackForm() {
                                     placeholder="Uraian Anda..."
                                 ></textarea>
                             </div>
+                        </div>
+
+                        <div className="rounded-xl border border-[#BE45FF]/30 bg-[#BE45FF]/10 px-5 py-4 text-sm text-gray-200">
+                            <p className="font-semibold text-white">Catatan:</p>
+                            <p className="mt-2 leading-relaxed">
+                                &ldquo;Dengan mengisi Absensi ini, Anda menyetujui PT Xynexis International akan memproses data pribadi Anda untuk keperluan pencatatan kehadiran dan kebutuhan administrasi&rdquo;
+                            </p>
                         </div>
 
                         {/* Submit Button */}
