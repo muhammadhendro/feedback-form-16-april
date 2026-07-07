@@ -651,13 +651,6 @@ export default function FeedbackForm() {
                             </div>
                         </div>
 
-                        <div className="rounded-xl border border-[#BE45FF]/30 bg-[#BE45FF]/10 px-5 py-4 text-sm text-gray-200">
-                            <p className="font-semibold text-white">Catatan:</p>
-                            <p className="mt-2 leading-relaxed">
-                                &ldquo;Dengan mengisi Absensi ini, Anda menyetujui PT Xynexis International akan memproses data pribadi Anda untuk keperluan pencatatan kehadiran dan kebutuhan administrasi&rdquo;
-                            </p>
-                        </div>
-
                         {/* Submit Button */}
                         <button
                             type="submit"
