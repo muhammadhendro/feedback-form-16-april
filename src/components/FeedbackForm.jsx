@@ -56,6 +56,21 @@ const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus
     </div>
 );
 
+const trainingDetails = [
+    {
+        label: 'Judul Training',
+        value: 'High Level Training - Perlindungan Data Pribadi (PDP) Implementation'
+    },
+    {
+        label: 'Tanggal',
+        value: 'Kamis, 9 Juli 2026'
+    },
+    {
+        label: 'Klien',
+        value: 'PERUSAHAAN UMUM PERCETAKAN UANG REPUBLIK INDONESIA (PERURI)'
+    }
+];
+
 export default function FeedbackForm() {
     const [formData, setFormData] = useState({
         full_name: '',
@@ -328,13 +343,19 @@ export default function FeedbackForm() {
                 <div className="relative bg-[#20242F]/80 backdrop-blur-sm px-4 pb-6 pt-4 md:px-12 md:pb-12 md:pt-6 md:rounded-2xl md:shadow-2xl md:border border-gray-700 animate-fade-in-up">
                     {/* Header */}
                     <div className="text-center mb-6 pb-4 border-b border-gray-600/50">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
+                        <h1 className="mx-auto max-w-2xl text-[2rem] leading-tight md:text-4xl font-bold text-white mb-3 tracking-tight">
                             Form Feedback Training
                         </h1>
-                        <div className="text-left mt-6 text-gray-300 space-y-1 text-sm md:text-base border border-gray-600/50 bg-[#2B303E]/50 p-4 rounded-xl">
-                            <p><span className="font-semibold text-white inline-block w-32">Judul Training</span> : High Level Training - Perlindungan Data Pribadi (PDP) Implementation</p>
-                            <p><span className="font-semibold text-white inline-block w-32">Tanggal</span> : Kamis, 9 Juli 2026</p>
-                            <p><span className="font-semibold text-white inline-block w-32">Klien</span> : PERUSAHAAN UMUM PERCETAKAN UANG REPUBLIK INDONESIA (PERURI)</p>
+                        <div className="mt-5 rounded-2xl border border-gray-600/50 bg-[#2B303E]/50 p-4 sm:p-5">
+                            <div className="space-y-4 text-left">
+                                {trainingDetails.map(({ label, value }) => (
+                                    <div key={label} className="flex flex-col gap-1.5 sm:grid sm:grid-cols-[8.5rem_1rem_minmax(0,1fr)] sm:gap-x-3">
+                                        <span className="text-sm font-semibold text-white sm:text-base">{label}</span>
+                                        <span className="hidden text-gray-400 sm:block">:</span>
+                                        <p className="text-sm leading-6 text-gray-300 sm:text-base sm:leading-7">{value}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
