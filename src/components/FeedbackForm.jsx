@@ -59,15 +59,15 @@ const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus
 const trainingDetails = [
     {
         label: 'Judul Training',
-        value: 'High Level Training - Perlindungan Data Pribadi (PDP) Implementation'
+        value: 'Inhouse Training PDPL Implementation'
     },
     {
         label: 'Tanggal',
-        value: 'Kamis, 9 Juli 2026'
+        value: 'Jakarta, 28 Juli 2026'
     },
     {
         label: 'Klien',
-        value: 'PERUSAHAAN UMUM PERCETAKAN UANG REPUBLIK INDONESIA (PERURI)'
+        value: 'PT Nusantara Regas'
     }
 ];
 
@@ -169,25 +169,25 @@ export default function FeedbackForm() {
         const nameRegex = /^[a-zA-Z\s\.\-\']+$/;
 
         if (!formData.full_name) {
-            errors.full_name = 'Nama Peserta is required';
+            errors.full_name = 'Nama Peserta wajib diisi';
         } else if (formData.full_name.length < 2) {
-            errors.full_name = 'Name is too short';
+            errors.full_name = 'Nama Peserta terlalu singkat';
         } else if (!nameRegex.test(formData.full_name)) {
-            errors.full_name = 'Name contains invalid characters';
+            errors.full_name = 'Nama Peserta mengandung karakter yang tidak valid';
         }
 
         if (!formData.company_name) {
-            errors.company_name = 'Perusahaan is required';
+            errors.company_name = 'Perusahaan wajib diisi';
         } else if (formData.company_name.length < 2) {
-            errors.company_name = 'Company name is too short';
+            errors.company_name = 'Nama perusahaan terlalu singkat';
         }
 
         if (!formData.division_role) {
-            errors.division_role = 'Divisi / Jabatan is required';
+            errors.division_role = 'Divisi / Jabatan wajib diisi';
         }
 
         if (formData.email && !emailRegex.test(formData.email)) {
-            errors.email = 'Invalid email address';
+            errors.email = 'Alamat email tidak valid';
         }
 
         const requiredOptions = [
@@ -389,7 +389,7 @@ export default function FeedbackForm() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <InputField
-                                    label="Nama Peserta"
+                                    label="1. Nama Peserta (nama lengkap)"
                                     name="full_name"
                                     required
                                     value={formData.full_name}
@@ -399,7 +399,7 @@ export default function FeedbackForm() {
                                     onBlur={() => setFocusedField(null)}
                                 />
                                 <InputField
-                                    label="Perusahaan"
+                                    label="2. Perusahaan"
                                     name="company_name"
                                     required
                                     value={formData.company_name}
@@ -409,7 +409,7 @@ export default function FeedbackForm() {
                                     onBlur={() => setFocusedField(null)}
                                 />
                                 <InputField
-                                    label="Divisi / Jabatan"
+                                    label="3. Divisi / Jabatan"
                                     name="division_role"
                                     required
                                     value={formData.division_role}
@@ -419,7 +419,7 @@ export default function FeedbackForm() {
                                     onBlur={() => setFocusedField(null)}
                                 />
                                 <InputField
-                                    label="Email (tidak wajib)"
+                                    label="4. Email (tidak wajib)"
                                     name="email"
                                     type="email"
                                     value={formData.email}
@@ -429,7 +429,7 @@ export default function FeedbackForm() {
                                     onBlur={() => setFocusedField(null)}
                                 />
                                 <InputField
-                                    label="No. HP (tidak wajib)"
+                                    label="5. No. HP (tidak wajib)"
                                     name="phone_number"
                                     type="tel"
                                     value={formData.phone_number}
