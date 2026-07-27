@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../../utils/supabaseClient';
 import * as XLSX from 'xlsx';
 
 export default function AdminDashboard() {
@@ -13,6 +12,21 @@ export default function AdminDashboard() {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  const getSearchableText = (sub) => [
+    sub.full_name,
+    sub.company_name,
+    sub.division_role,
+    sub.email,
+    sub.phone_number,
+    sub.ur_kritik_saran,
+    sub.ur_hal_baik,
+    sub.ur_saran_selanjutnya,
+    sub.ur_kebutuhan_topik
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+
   useEffect(() => {
     const token = localStorage.getItem('admin_token');
     if (!token) {
@@ -20,47 +34,45 @@ export default function AdminDashboard() {
       return;
     }
 
-    fetchSubmissions(token);
+    const fetchSubmissions = async () => {
+      try {
+        const response = await fetch('/api/admin/submissions', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.status === 401) {
+          localStorage.removeItem('admin_token');
+          router.push('/admin');
+          return;
+        }
+
+        const data = await response.json();
+        setSubmissions(data.submissions || []);
+        setFilteredSubmissions(data.submissions || []);
+      } catch {
+        setError('Failed to load submissions');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubmissions();
   }, [router]);
 
   useEffect(() => {
     // Filter submissions based on search term
     if (searchTerm) {
-      const filtered = submissions.filter(sub =>
-        sub.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sub.company_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sub.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sub.comments?.toLowerCase().includes(searchTerm.toLowerCase())
+      const normalizedTerm = searchTerm.toLowerCase();
+      const filtered = submissions.filter((sub) =>
+        getSearchableText(sub).includes(normalizedTerm)
       );
       setFilteredSubmissions(filtered);
     } else {
       setFilteredSubmissions(submissions);
     }
   }, [searchTerm, submissions]);
-
-  const fetchSubmissions = async (token) => {
-    try {
-      const response = await fetch('/api/admin/submissions', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.status === 401) {
-        localStorage.removeItem('admin_token');
-        router.push('/admin');
-        return;
-      }
-
-      const data = await response.json();
-      setSubmissions(data.submissions || []);
-      setFilteredSubmissions(data.submissions || []);
-    } catch (err) {
-      setError('Failed to load submissions');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('admin_token');
@@ -72,16 +84,26 @@ export default function AdminDashboard() {
     const data = filteredSubmissions.map(sub => ({
       'Date': new Date(sub.created_at).toLocaleDateString(),
       'Time': new Date(sub.created_at).toLocaleTimeString(),
-      'Name': sub.full_name,
-      'Company': sub.company_name,
-      'Sector': sub.sector || '-',
-      'Email': sub.email,
-      'Satisfaction': sub.satisfaction_overall,
-      'Material Usefulness': sub.material_usefulness,
-      'Recommend': sub.recommend_colleagues,
-      '1-on-1 Session': sub.one_on_one_session || '-',
-      'Privacy Consent': sub.privacy_consent ? 'Yes' : 'No',
-      'Comments': sub.comments || '-'
+      'Nama Peserta': sub.full_name,
+      'Perusahaan': sub.company_name,
+      'Divisi / Jabatan': sub.division_role,
+      'Email': sub.email || '-',
+      'No. HP': sub.phone_number || '-',
+      'Kesesuaian Materi': sub.opt_materi_kesesuaian,
+      'Kemampuan Trainer': sub.opt_trainer_kemampuan,
+      'Kualitas Materi': sub.opt_materi_kualitas,
+      'Metode Penyampaian': sub.opt_metode_penyampaian,
+      'Fasilitas & Media': sub.opt_fasilitas_media,
+      'Efektivitas Penyampaian': sub.opt_efektivitas_penyampaian,
+      'Tingkat Pemahaman': sub.opt_tingkat_pemahaman,
+      'Kepuasan Keseluruhan': sub.opt_kepuasan_keseluruhan,
+      'Kebutuhan Layanan': sub.yt_kebutuhan_layanan,
+      'Bersedia Menerima Info': sub.yt_bersedia_info,
+      'Bersedia Dokumentasi': sub.yt_bersedia_dokumentasi,
+      'Kritik & Saran': sub.ur_kritik_saran || '-',
+      'Hal yang Sudah Baik': sub.ur_hal_baik || '-',
+      'Saran Selanjutnya': sub.ur_saran_selanjutnya || '-',
+      'Kebutuhan Topik Selanjutnya': sub.ur_kebutuhan_topik || '-'
     }));
 
     // Create worksheet
@@ -92,7 +114,7 @@ export default function AdminDashboard() {
     XLSX.utils.book_append_sheet(wb, ws, "Submissions");
 
     // Generate Excel file
-    XLSX.writeFile(wb, `feedback_submissions_${new Date().toISOString().split('T')[0]}.xlsx`);
+    XLSX.writeFile(wb, `training_feedback_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
   if (loading) {
@@ -111,7 +133,7 @@ export default function AdminDashboard() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                Feedback Submissions
+                Training Feedback Submissions
               </h1>
               <p className="text-gray-400">
                 Total: {filteredSubmissions.length} {searchTerm && `(filtered from ${submissions.length})`}
@@ -139,7 +161,7 @@ export default function AdminDashboard() {
           <div className="mt-6">
             <input
               type="text"
-              placeholder="Search by name, company, email, or comments..."
+              placeholder="Search by name, company, division, email, phone, or comments..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-3 rounded-lg bg-[#1a1e28] border border-gray-700 text-white placeholder-gray-500 
@@ -165,19 +187,20 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Name</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Company</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Sector</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Division / Role</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Satisfaction</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Material</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Recommend</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">1-on-1 Session</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Comments</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Phone</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Kepuasan</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Kebutuhan Layanan</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Info</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Dokumentasi</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Kritik & Saran</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700/50">
                 {filteredSubmissions.length === 0 ? (
                   <tr>
-                    <td colSpan="8" className="px-6 py-12 text-center text-gray-400">
+                    <td colSpan="11" className="px-6 py-12 text-center text-gray-400">
                       No submissions found
                     </td>
                   </tr>
@@ -198,41 +221,30 @@ export default function AdminDashboard() {
                         {sub.company_name}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
-                        {sub.sector || '-'}
+                        {sub.division_role}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
-                        {sub.email}
+                        {sub.email || '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        {sub.phone_number || '-'}
                       </td>
                       <td className="px-6 py-4 text-sm">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          parseInt(sub.satisfaction_overall) >= 4 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : parseInt(sub.satisfaction_overall) >= 3
-                            ? 'bg-yellow-500/20 text-yellow-400'
-                            : 'bg-red-500/20 text-red-400'
-                        }`}>
-                          {sub.satisfaction_overall}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          parseInt(sub.material_usefulness) >= 4 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : parseInt(sub.material_usefulness) >= 3
-                            ? 'bg-yellow-500/20 text-yellow-400'
-                            : 'bg-red-500/20 text-red-400'
-                        }`}>
-                          {sub.material_usefulness}
+                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-[#67C23A]/20 text-[#9fe275]">
+                          {sub.opt_kepuasan_keseluruhan}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
-                        {sub.recommend_colleagues}
+                        {sub.yt_kebutuhan_layanan}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
-                        {sub.one_on_one_session || '-'}
+                        {sub.yt_bersedia_info}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        {sub.yt_bersedia_dokumentasi}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-400 max-w-xs truncate">
-                        {sub.comments || '-'}
+                        {sub.ur_kritik_saran || '-'}
                       </td>
                     </tr>
                   ))

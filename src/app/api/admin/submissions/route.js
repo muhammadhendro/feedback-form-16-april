@@ -21,7 +21,7 @@ export async function GET(request) {
 
     // Fetch all submissions
     const { data, error } = await supabase
-      .from('feedback_submissions')
+      .from('pdpl_surabaya_training_feedback')
       .select('*')
       .order('created_at', { ascending: false });
 

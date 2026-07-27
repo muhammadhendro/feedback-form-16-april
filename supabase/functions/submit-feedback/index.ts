@@ -110,15 +110,28 @@ serve(async (req) => {
 
     // 4. Insert feedback submission
     const { error: insertError } = await supabaseClient
-      .from('feedback_submissions')
+      .from('pdpl_surabaya_training_feedback')
       .insert({
         full_name: formData.full_name?.trim(),
         company_name: formData.company_name?.trim(),
-        email: formData.email?.trim().toLowerCase(),
-        satisfaction_overall: formData.satisfaction_overall,
-        material_usefulness: formData.material_usefulness,
-        recommend_colleagues: formData.recommend_colleagues,
-        comments: formData.comments?.trim()
+        division_role: formData.division_role?.trim(),
+        email: formData.email?.trim().toLowerCase() || null,
+        phone_number: formData.phone_number?.trim() || null,
+        opt_materi_kesesuaian: formData.opt_materi_kesesuaian,
+        opt_trainer_kemampuan: formData.opt_trainer_kemampuan,
+        opt_materi_kualitas: formData.opt_materi_kualitas,
+        opt_metode_penyampaian: formData.opt_metode_penyampaian,
+        opt_fasilitas_media: formData.opt_fasilitas_media,
+        opt_efektivitas_penyampaian: formData.opt_efektivitas_penyampaian,
+        opt_tingkat_pemahaman: formData.opt_tingkat_pemahaman,
+        opt_kepuasan_keseluruhan: formData.opt_kepuasan_keseluruhan,
+        yt_kebutuhan_layanan: formData.yt_kebutuhan_layanan,
+        yt_bersedia_info: formData.yt_bersedia_info,
+        yt_bersedia_dokumentasi: formData.yt_bersedia_dokumentasi,
+        ur_kritik_saran: formData.ur_kritik_saran?.trim(),
+        ur_hal_baik: formData.ur_hal_baik?.trim(),
+        ur_saran_selanjutnya: formData.ur_saran_selanjutnya?.trim(),
+        ur_kebutuhan_topik: formData.ur_kebutuhan_topik?.trim()
       })
 
     if (insertError) {
