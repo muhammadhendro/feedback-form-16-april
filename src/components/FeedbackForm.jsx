@@ -59,15 +59,15 @@ const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus
 const trainingDetails = [
     {
         label: 'Judul Training',
-        value: 'Inhouse Training PDPL Implementation'
+        value: 'Awareness PDP level Management'
     },
     {
         label: 'Tanggal',
-        value: 'Jakarta, 28 Juli 2026'
+        value: 'Selasa, 18 Agustus 2026'
     },
     {
         label: 'Klien',
-        value: 'PT Nusantara Regas'
+        value: 'Perum Perhutani'
     }
 ];
 
